@@ -195,4 +195,3 @@ def is_decomposable_negation_normal_form(formula):
             return is_decomposable_negation_normal_form(formula.left) and is_decomposable_negation_normal_form(formula.right)
     else:
         return False
-

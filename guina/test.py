@@ -1,5 +1,6 @@
 from formula import *
 from functions import *
+from semantics import *
 
 #print(f"Numero de conectivos: {number_of_connectives(Implies(Not(Atom('p')), Not(Atom('q'))))}")
 #print(f"Numero de conectivos: {number_of_connectives(And(Atom('p'), Atom('q')))}")
@@ -17,4 +18,7 @@ from functions import *
 #print(f"Is DNNF: {is_decomposable_negation_normal_form(Or(And(Or(Atom('a'), Not(Atom('b'))), Or(Atom('c'),Atom('d'))),And(Or(Atom('a'),Atom('b')), Or(Not(Atom('c')),Not(Atom('d'))))))}")
 #print(atoms(Or(Atom('p'), Atom('p'))))
 #print(f"Is DNNF: {is_decomposable_negation_normal_form(Or(And(Or(Atom('a'),Not(Atom('b'))),Or(Not(Atom('a')),Atom('d'))),And(Or(Atom('a'),Atom('b')),Or(Not(Atom('c')),Not(Atom('d'))))))}")
-print(f"substitution: {substitution(Implies(And(Atom('p'), Not(Atom('q'))), Atom('r')),Not(Atom('q')), Or(Atom('r'),Atom('t')),)}")
+#print(f"substitution: {substitution(Implies(And(Atom('p'), Not(Atom('q'))), Atom('r')),Not(Atom('q')), Or(Atom('r'),Atom('t')),)}")
+ex = {'a': False, 'b': False}
+print(satisfiability_brute_force(And(Not(Atom('a')), Atom('b'))))
+
