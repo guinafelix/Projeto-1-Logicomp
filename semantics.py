@@ -14,8 +14,9 @@ def truth_value(formula, interpretation: dict):
         else:
             return None
     if isinstance(formula, Not):
-        if interpretation.__contains__(formula.__str__()):
-            return interpretation[formula.inner]
+        temp = formula.inner
+        if interpretation.__contains__(temp.__str__()):
+            return not interpretation[temp.__str__()]
         else:
             return None
     if isinstance(formula, And):
@@ -69,7 +70,8 @@ def pre_process(formula):
     if isinstance(formula, Atom):
         return {formula.__str__(): True}
     if isinstance(formula, Not):
-        return {formula.inner: False}
+        a = formula.inner
+        return {a.__str__(): False}
     if isinstance(formula, And):
         left = pre_process(formula.left)
         right = pre_process(formula.right)

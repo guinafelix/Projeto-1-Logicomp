@@ -20,5 +20,5 @@ from semantics import *
 #print(f"Is DNNF: {is_decomposable_negation_normal_form(Or(And(Or(Atom('a'),Not(Atom('b'))),Or(Not(Atom('a')),Atom('d'))),And(Or(Atom('a'),Atom('b')),Or(Not(Atom('c')),Not(Atom('d'))))))}")
 #print(f"substitution: {substitution(Implies(And(Atom('p'), Not(Atom('q'))), Atom('r')),Not(Atom('q')), Or(Atom('r'),Atom('t')),)}")
 ex = {'a': False, 'b': False}
-print(satisfiability_brute_force(And(Not(Atom('a')), Atom('b'))))
+print(satisfiability_brute_force(And(Not(Atom('a')), Not(Atom('b')))))
 
