@@ -39,3 +39,5 @@ def or_all(list_formulas):
     for formula in list_formulas:
         first_formula = Or(first_formula, formula)
     return first_formula
+
+print("a")
