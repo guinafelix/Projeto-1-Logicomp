@@ -85,6 +85,18 @@ def rule_4(mat, atributos, q_regras):
                                                       Not(Atom('C' + str(i+1) + ',' + str(cont_p)))))
     return list_to_return
 
-test = rule_4(matriz, 3, 2)
+
+def rule_5(mat, atributos, q_regras):
+    list_to_return = []
+    cont_p = 0
+    for k in range(1, len(mat)):
+        if mat[k][q_regras + 1] == '1':
+            cont_p += 1
+            for i in range(q_regras):
+                list_to_return.append(Atom('C' + str(i + 1) + ',' + str(cont_p)))
+    return list_to_return
+
+
+test = rule_5(matriz, 3, 2)
 for a in test:
     print(a)
