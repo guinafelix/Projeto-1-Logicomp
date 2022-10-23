@@ -1,6 +1,7 @@
 from formula import *
 from functions import *
 from semantics import *
+import csv
 
 #ATRIBUTOS
 # ângulo de incidência pélvica (PI)
@@ -40,4 +41,22 @@ def or_all(list_formulas):
         first_formula = Or(first_formula, formula)
     return first_formula
 
-print("a")
+arquivo = open('column_bin_3a_2p.csv')
+linhas = csv.reader(arquivo)
+
+matriz = []
+for linha in linhas:
+    matriz.append(linha)
+
+
+def rule_2(mat, atributos, q_regras):
+    list_to_return = []
+    for i in range(q_regras):
+        for j in range(atributos):
+            list_to_return.append(Not(Atom(mat[0][j] + ',' + str(i+1) + ',' + 's')))
+    return list_to_return
+
+
+#test = rule_2(matriz, 3, 4)
+    # for a in test:
+    #print(a.__str__())
