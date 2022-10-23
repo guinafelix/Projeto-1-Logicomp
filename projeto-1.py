@@ -74,7 +74,7 @@ def rule_4(mat, atributos, q_regras):
     list_to_return = []
     cont_p = 0
     for k in range(1, len(mat)):
-        if mat[k][q_regras + 1] == '1':
+        if mat[k][atributos] == '1':
             cont_p += 1
             for i in range(q_regras):
                 for j in range(atributos):
@@ -86,11 +86,11 @@ def rule_4(mat, atributos, q_regras):
     return list_to_return
 
 
-def rule_5(mat, q_regras):
+def rule_5(mat, atributos, q_regras):
     list_to_return = []
     cont_p = 0
     for k in range(1, len(mat)):
-        if mat[k][q_regras + 1] == '1':
+        if mat[k][atributos] == '1':
             cont_p += 1
             for i in range(q_regras):
                 list_to_return.append(Atom('C' + str(i + 1) + ',' + str(cont_p)))
