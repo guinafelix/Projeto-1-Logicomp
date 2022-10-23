@@ -57,6 +57,18 @@ def rule_2(mat, atributos, q_regras):
     return list_to_return
 
 
-#test = rule_2(matriz, 3, 4)
-    # for a in test:
-    #print(a.__str__())
+def rule_3(mat, atributos, q_regras):
+    list_to_return = []
+    for i in range(q_regras):
+        for j in range(atributos):
+            if j >= atributos - 2:
+                list_to_return.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))
+            else:
+                list_to_return.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'))
+    return or_all(list_to_return)
+
+
+
+test = rule_3(matriz, 3, 2)
+
+
