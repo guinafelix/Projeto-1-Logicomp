@@ -8,6 +8,11 @@ def truth_value(formula, interpretation: dict):
     """Determines the truth value of a formula in an interpretation (valuation).
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
+    left = formula
+    right = formula
+    if isinstance(formula, And) or isinstance(formula, Or) or isinstance(formula, Implies):
+        left = truth_value(formula.left, interpretation)
+        right = truth_value(formula.right, interpretation)
     if isinstance(formula, Atom):
         if interpretation.__contains__(formula.__str__()):
             return interpretation[formula.__str__()]
@@ -20,17 +25,16 @@ def truth_value(formula, interpretation: dict):
         else:
             return None
     if isinstance(formula, And):
-        if (truth_value(formula.left, interpretation) is None) or (truth_value(formula.right, interpretation) is None):
+        if left is None or right is None:
             return None
         else:
-            return truth_value(formula.left, interpretation) and truth_value(formula.right, interpretation)
+            return left and right
     if isinstance(formula, Or):
-        return truth_value(formula.left, interpretation) or truth_value(formula.right, interpretation)
+        return left or right
     if isinstance(formula, Implies):
-        if (truth_value(formula.left, interpretation) is True) and (
-                truth_value(formula.right, interpretation) is False):
+        if left is True and right is False:
             return False
-        if (truth_value(formula.left, interpretation) is None) or (truth_value(formula.right, interpretation) is None):
+        if left is None or right is None:
             return None
         else:
             return True
@@ -60,8 +64,9 @@ def satisfiability_brute_force(formula):
     Otherwise, it returns False."""
     list_atoms = atoms(formula)
     interpretation = pre_process(formula)
-    for a in interpretation.keys():
-        list_atoms.remove(a.__str__())
+    if interpretation is not {}:
+        for a in interpretation.keys():
+            list_atoms.remove(a.__str__())
     return sat(formula, list_atoms.copy(), interpretation)
 
 
@@ -71,11 +76,14 @@ def pre_process(formula):
         return {formula.__str__(): True}
     if isinstance(formula, Not):
         a = formula.inner
-        return {a.__str__(): False}
-    if isinstance(formula, And):
+        if isinstance(a, Atom):
+            return {a.__str__(): False}
+        else:
+            return {}
+    elif isinstance(formula, And):
         left = pre_process(formula.left)
         right = pre_process(formula.right)
-        if left and right is not None:
+        if left is not {} and right is not {}:
             return {**left, **right}
     else:
         return {}
