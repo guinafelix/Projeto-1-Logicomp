@@ -52,22 +52,26 @@ for linha in linhas:
 def rule_2(mat, atributos, q_regras):
     list_to_return = []
     for i in range(q_regras):
+        list_aux = []
         for j in range(atributos):
-            list_to_return.append(Not(Atom(mat[0][j] + ',' + str(i+1) + ',' + 's')))
-    return list_to_return
+            list_aux.append(Not(Atom(mat[0][j] + ',' + str(i+1) + ',' + 's')))
+        list_to_return.append(or_all(list_aux))
+    return and_all(list_to_return)
 
 
 def rule_3(mat, atributos, q_regras):
     list_to_return = []
     for k in range(1, len(mat)):
-        if mat[k][q_regras + 1] == '0':
+        if mat[k][atributos] == '0':
             for i in range(q_regras):
+                list_aux = []
                 for j in range(atributos):
                     if j >= atributos - 2:
-                        list_to_return.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))
+                        list_aux.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))
                     else:
-                        list_to_return.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'))
-    return or_all(list_to_return)
+                        list_aux.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'))
+                list_to_return.append(or_all(list_aux))
+    return and_all(list_to_return)
 
 
 def rule_4(mat, atributos, q_regras):
@@ -76,14 +80,16 @@ def rule_4(mat, atributos, q_regras):
     for k in range(1, len(mat)):
         if mat[k][atributos] == '1':
             cont_p += 1
+            list_aux = []
             for i in range(q_regras):
                 for j in range(atributos):
                     if mat[k][j] == '0':
-                        list_to_return.append(Implies(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'), Not(Atom('C' + str(i+1) + ',' + str(cont_p)))))
+                        list_aux.append(Implies(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'), Not(Atom('C' + str(i+1) + ',' + str(cont_p)))))
                     else:
-                        list_to_return.append(Implies(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'),
+                        list_aux.append(Implies(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'),
                                                       Not(Atom('C' + str(i+1) + ',' + str(cont_p)))))
-    return list_to_return
+            list_to_return.append(and_all(list_aux))
+    return and_all(list_to_return)
 
 
 def rule_5(mat, atributos, q_regras):
@@ -92,11 +98,12 @@ def rule_5(mat, atributos, q_regras):
     for k in range(1, len(mat)):
         if mat[k][atributos] == '1':
             cont_p += 1
+            list_aux = []
             for i in range(q_regras):
-                list_to_return.append(Atom('C' + str(i + 1) + ',' + str(cont_p)))
-    return list_to_return
+                list_aux.append(Atom('C' + str(i + 1) + ',' + str(cont_p)))
+            list_to_return.append(or_all(list_aux))
+    return and_all(list_to_return)
 
 
-test = rule_5(matriz, 3, 2)
-for a in test:
-    print(a)
+test = rule_5(matriz, 3, 4)
+print(test)
