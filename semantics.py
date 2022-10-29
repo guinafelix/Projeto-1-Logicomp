@@ -8,8 +8,8 @@ def truth_value(formula, interpretation: dict):
     """Determines the truth value of a formula in an interpretation (valuation).
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
-    left = formula
-    right = formula
+    left = Formula
+    right = Formula
     if isinstance(formula, And) or isinstance(formula, Or) or isinstance(formula, Implies):
         left = truth_value(formula.left, interpretation)
         right = truth_value(formula.right, interpretation)
@@ -20,10 +20,13 @@ def truth_value(formula, interpretation: dict):
             return None
     if isinstance(formula, Not):
         temp = formula.inner
-        if interpretation.__contains__(temp.__str__()):
-            return not interpretation[temp.__str__()]
-        else:
-            return None
+        if isinstance(temp, And) or isinstance(temp, Or) or isinstance(temp, Implies):
+            return not truth_value(temp, interpretation)
+        if isinstance(temp, Atom):
+            if interpretation.__contains__(temp.__str__()):
+                return not interpretation[temp.__str__()]
+            else:
+                return None
     if isinstance(formula, And):
         if left is None or right is None:
             return None
