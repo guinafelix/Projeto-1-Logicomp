@@ -15,7 +15,9 @@ import csv
 
 arquivo = open('column_bin_3a_2p.csv')
 arquivo2 = open('test.csv')
-linhas = csv.reader(arquivo2)
+arquivo3 = open('column_bin_3a_3p.csv')
+
+linhas = csv.reader(arquivo3)
 
 matriz = []
 for linha in linhas:
@@ -29,13 +31,13 @@ andall = and_all(list_for_sat)
 result = satisfiability_brute_force(andall)
 
 
-def get_rules(result: dict, q_regras):
+def get_rules(result_dict: dict, q_regras):
     rules = {}
     for j in range(q_regras):
         rules[str(j + 1)] = ''
-    for a in result.keys():
+    for a in result_dict.keys():
         lis = a.split(',')
-        if result[a] is True and len(lis) == 3:
+        if result_dict[a] is True and len(lis) == 3:
             if lis[2] == 'le':
                 if rules[lis[1]] == '':
                     rules[lis[1]] = lis[0]
