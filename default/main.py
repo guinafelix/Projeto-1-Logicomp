@@ -1,8 +1,6 @@
 """You can test your functions in this module as in the following code: """
 
-
-from formula import *
-from functions import *
+from default.functions import *
 
 
 formula1 = Atom('p')  # p

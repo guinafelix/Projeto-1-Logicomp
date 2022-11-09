@@ -1,7 +1,7 @@
 """The goal in this module is to define functions that take a formula as input and
 do some computation on its syntactic structure. """
 
-from formula import *
+from default.formula import *
 
 
 def length(formula):

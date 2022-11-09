@@ -1,5 +1,3 @@
-from formula import *
-from functions import *
 from semantics import *
 
 # FUNÇÕES AUXILIARES

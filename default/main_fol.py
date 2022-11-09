@@ -1,5 +1,5 @@
-from interpretation_fol import *
-from fol_functions import length_fol, variables_from_term
+from default.interpretation_fol import *
+from default.fol_functions import length_fol, variables_from_term
 
 term1 = Con('a')
 term2 = Var('y')

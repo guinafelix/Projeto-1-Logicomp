@@ -1,6 +1,3 @@
-from formula import *
-from functions import *
-from semantics import *
 from rules import *
 import csv
 

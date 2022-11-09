@@ -1,4 +1,4 @@
-from fol_formula import *
+from default.fol_formula import *
 from term import *
 
 
