@@ -30,6 +30,34 @@ def or_all(list_formulas):
         first_formula = Or(first_formula, formula)
     return first_formula
 
+
+def get_rules(result_dict: dict, q_regras):
+    rules = {}
+    for j in range(q_regras):
+        rules[str(j + 1)] = ''
+    for a in result_dict.keys():
+        lis = a.split(',')
+        if result_dict[a] is True and len(lis) == 3:
+            if lis[2] == 'le':
+                if rules[lis[1]] == '':
+                    rules[lis[1]] = lis[0]
+                else:
+                    rules[lis[1]] = (rules[lis[1]] + ', ' + lis[0])
+            if lis[2] == 'gt':
+                if rules[lis[1]] == '':
+                    rules[lis[1]] = lis[0][0:2] + ' > ' + lis[0][-5:]
+                else:
+                    rules[lis[1]] = rules[lis[1]] + ', ' + lis[0][0:2] + ' > ' + lis[0][-5:]
+    return print_rules(rules)
+
+
+def print_rules(rules: dict):
+    for a in rules.keys():
+        print('[' + rules[a] + ']' + ' => P')
+
+# RESTRIÇÕES
+
+
 def rule_1(mat, atributos, q_regras):
     list_to_return = []
     for i in range(q_regras):
