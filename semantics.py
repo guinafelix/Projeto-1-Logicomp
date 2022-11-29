@@ -1,7 +1,7 @@
 """The goal in this module is to define functions associated with the semantics of formulas in propositional logic. """
 
 from default.formula import *
-from default.functions import atoms
+from default.functions import atoms, is_literal
 
 
 def truth_value(formula, interpretation: dict):
@@ -105,3 +105,55 @@ def sat(formula, atoms_f, interpretation: dict):
     if result:
         return result
     return sat(formula, atoms_f.copy(), interpretation2)
+
+
+def implication_free(formula):
+    if isinstance(formula, Implies):
+        left = implication_free(formula.left)
+        right = implication_free(formula.right)
+        return Or(Not(left), right)
+    if isinstance(formula, And):
+        return And(implication_free(formula.left), implication_free(formula.right))
+    if isinstance(formula, Or):
+        return Or(implication_free(formula.left), implication_free(formula.right))
+    if isinstance(formula, Not):
+        return Not(implication_free(formula))
+    if isinstance(formula, Atom):
+        return formula
+
+
+def negation_normal_form(formula):
+    if is_literal(formula):
+        return formula
+    if isinstance(formula, Not) and isinstance(formula.inner, Not):
+        return negation_normal_form(formula.inner)
+    if isinstance(formula, And):
+        return And(negation_normal_form(formula.left), negation_normal_form(formula.right))
+    if isinstance(formula, Or):
+        return Or(negation_normal_form(formula.left), negation_normal_form(formula.right))
+    if isinstance(formula, Not) and isinstance(formula.inner, And):
+        return Or(negation_normal_form(Not(formula.left)), negation_normal_form(Not(formula.right)))
+    if isinstance(formula, Not) and isinstance(formula.inner, Or):
+        return And(negation_normal_form(Not(formula.left)), negation_normal_form(Not(formula.right)))
+
+
+def distributive(formula):
+    if is_literal(formula):
+        return formula
+    if isinstance(formula, And):
+        return And(distributive(formula.left), distributive(formula.right))
+    if isinstance(formula, Or):
+        left = distributive(formula.left)
+        right = distributive(formula.right)
+        if isinstance(left, And):
+            return And(distributive(Or(left.left, right)), distributive(Or(left.right, right)))
+        if isinstance(right, And):
+            return And(distributive(Or(right.left, left)), distributive(Or(right.right, left)))
+        return Or(left, right)
+
+
+def to_cnf(formula):
+    b = implication_free(formula)
+    c = negation_normal_form(b)
+    d = distributive(c)
+    return d

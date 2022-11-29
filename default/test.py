@@ -18,6 +18,7 @@ from semantics import *
 #print(f"Is DNNF: {is_decomposable_negation_normal_form(Or(And(Or(Atom('a'),Not(Atom('b'))),Or(Not(Atom('a')),Atom('d'))),And(Or(Atom('a'),Atom('b')),Or(Not(Atom('c')),Not(Atom('d'))))))}")
 #print(f"substitution: {substitution(Implies(And(Atom('p'), Not(Atom('q'))), Atom('r')),Not(Atom('q')), Or(Atom('r'),Atom('t')),)}")
 ex = {'a': False, 'b': False}
-print(satisfiability_brute_force(Not(Or(Atom('a'), Atom('b')))))
+#rint(satisfiability_brute_force(Not(Or(Atom('a'), Atom('b')))))
 #print(truth_value(Or(Atom('a'),Atom('b')), ex))
-
+const = 'oie'
+print(to_cnf(Implies(Atom('a'), Atom('c'))).__str__())
