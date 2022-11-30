@@ -1,87 +1,34 @@
-from semantics import *
-
-# FUNÇÕES AUXILIARES
-def and_all(list_formulas):
-    """
-    Returns a BIG AND formula from a list of formulas
-    For example, if list_formulas is [Atom('1'), Atom('p'), Atom('r')], it returns
-    And(And(Atom('1'), Atom('p')), Atom('r')).
-    :param list_formulas: a list of formulas
-    :return: And formula
-    """
-    first_formula = list_formulas[0]
-    del list_formulas[0]
-    for formula in list_formulas:
-        first_formula = And(first_formula, formula)
-    return first_formula
-
-
-def or_all(list_formulas):
-    """
-    Returns a BIG OR of formulas from a list of formulas.
-    For example, if list_formulas is [Atom('1'), Atom('p'), Atom('r')], it returns
-    Or(Or(Atom('1'), Atom('p')), Atom('r')).
-    :param list_formulas: a list of formulas
-    :return: Or formula
-    """
-    first_formula = list_formulas[0]
-    del list_formulas[0]
-    for formula in list_formulas:
-        first_formula = Or(first_formula, formula)
-    return first_formula
-
-
-def get_rules(result_dict: dict, q_regras):
-    rules = {}
-    for j in range(q_regras):
-        rules[str(j + 1)] = ''
-    for a in result_dict.keys():
-        lis = a.split(',')
-        if result_dict[a] is True and len(lis) == 3:
-            if lis[2] == 'le':
-                if rules[lis[1]] == '':
-                    rules[lis[1]] = lis[0]
-                else:
-                    rules[lis[1]] = (rules[lis[1]] + ', ' + lis[0])
-            if lis[2] == 'gt':
-                if rules[lis[1]] == '':
-                    rules[lis[1]] = lis[0][0:2] + ' > ' + lis[0][-5:]
-                else:
-                    rules[lis[1]] = rules[lis[1]] + ', ' + lis[0][0:2] + ' > ' + lis[0][-5:]
-    return print_rules(rules)
-
-
-def print_rules(rules: dict):
-    for a in rules.keys():
-        print('[' + rules[a] + ']' + ' => P')
+from default.semantics import *
+from utils.utils import *
 
 # RESTRIÇÕES
 
-
-def rule_1(mat, atributos, q_regras):
+def constraint_1(mat, atributos, q_regras):
     list_to_return = []
     for i in range(q_regras):
-        list_aux = []
-        list_aux2 = []
+        or_list = []
+        and_list = []
         for j in range(atributos):
-            list_aux.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'))
-            list_aux.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))
-            list_aux.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's'))
-            temp = or_all(list_aux)
-            list_aux2.append(Not(And(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'),
+            or_list.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'))
+            or_list.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))
+            or_list.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's'))
+            temp = or_all(or_list)
+            and_list.append(Not(And(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'),
                                      Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))))
-            list_aux2.append(
+            and_list.append(
                 Not(And(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'),
                         Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's'))))
-            list_aux2.append(
+            and_list.append(
                 Not(And(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'),
                         Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's'))))
-            temp2 = and_all(list_aux2)
+            temp2 = and_all(and_list)
             list_to_return.append(And(temp, temp2))
+            or_list.clear()
+            and_list.clear()
     return and_all(list_to_return)
 
 
-def rule_2(mat, atributos, q_regras):
+def constraint_2(mat, atributos, q_regras):
     list_to_return = []
     for i in range(q_regras):
         list_aux = []
@@ -91,7 +38,7 @@ def rule_2(mat, atributos, q_regras):
     return and_all(list_to_return)
 
 
-def rule_3(mat, atributos, q_regras):
+def constraint_3(mat, atributos, q_regras):
     list_to_return = []
     for k in range(1, len(mat)):
         if mat[k][atributos] == '0':
@@ -106,7 +53,7 @@ def rule_3(mat, atributos, q_regras):
     return and_all(list_to_return)
 
 
-def rule_4(mat, atributos, q_regras):
+def constraint_4(mat, atributos, q_regras):
     list_to_return = []
     cont_p = 0
     for k in range(1, len(mat)):
@@ -125,7 +72,7 @@ def rule_4(mat, atributos, q_regras):
     return and_all(list_to_return)
 
 
-def rule_5(mat, atributos, q_regras):
+def constraint_5(mat, atributos, q_regras):
     list_to_return = []
     cont_p = 0
     for k in range(1, len(mat)):

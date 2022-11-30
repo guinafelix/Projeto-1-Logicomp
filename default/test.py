@@ -1,4 +1,4 @@
-from semantics import *
+from default.semantics import *
 
 #print(f"Numero de conectivos: {number_of_connectives(Implies(Not(Atom('p')), Not(Atom('q'))))}")
 #print(f"Numero de conectivos: {number_of_connectives(And(Atom('p'), Atom('q')))}")

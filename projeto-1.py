@@ -1,4 +1,4 @@
-from rules import *
+from constraints.constraints import *
 import csv
 
 # ATRIBUTOS
@@ -13,7 +13,7 @@ import csv
 arquivo = open('column_bin_3a_2p.csv')
 arquivo2 = open('test.csv')
 arquivo3 = open('column_bin_3a_3p.csv')
-nome_arquivo = 'column_bin_3a_3p.csv'
+nome_arquivo = 'column_bin_3a_2p.csv'
 
 q_atributos = nome_arquivo[11]
 
@@ -23,13 +23,14 @@ matriz = []
 for linha in linhas:
     matriz.append(linha)
 
-list_for_sat = [rule_1(matriz, int(q_atributos), 2), rule_2(matriz, int(q_atributos), 2),
-                rule_3(matriz, int(q_atributos), 2), rule_4(matriz, int(q_atributos), 2),
-                rule_5(matriz, int(q_atributos), 2)]
+list_for_sat = [constraint_1(matriz, int(q_atributos), 2), constraint_2(matriz, int(q_atributos), 2),
+              constraint_3(matriz, int(q_atributos), 2), constraint_4(matriz, int(q_atributos), 2),
+              constraint_5(matriz, int(q_atributos), 2)]
 
 and_all_list = and_all(list_for_sat)
-
+print(constraint_4(matriz, int(q_atributos), 2).__str__())
 result = satisfiability_brute_force(and_all_list)
-
-#get_rules(result, 2)
+form = constraint_1(matriz, int(q_atributos), 2)
+print(form.__str__())
+get_rules(result, 2)
 
