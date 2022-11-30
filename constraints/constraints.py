@@ -4,12 +4,12 @@ from default.formula import *
 # RESTRIÇÕES
 
 
-def constraint_1(mat, atributos, q_regras):
+def constraint_1(mat, attributes, q_rules):
     list_to_return = []
-    for i in range(q_regras):
+    for i in range(q_rules):
         or_list = []
         and_list = []
-        for j in range(atributos):
+        for j in range(attributes):
             or_list.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'))
             or_list.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))
             or_list.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's'))
@@ -29,23 +29,23 @@ def constraint_1(mat, atributos, q_regras):
     return and_all(list_to_return)
 
 
-def constraint_2(mat, atributos, q_regras):
+def constraint_2(mat, attributes, q_rules):
     list_to_return = []
-    for i in range(q_regras):
+    for i in range(q_rules):
         list_aux = []
-        for j in range(atributos):
+        for j in range(attributes):
             list_aux.append(Not(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's')))
         list_to_return.append(or_all(list_aux))
     return and_all(list_to_return)
 
 
-def constraint_3(mat, atributos, q_regras):
+def constraint_3(mat, attributes, q_rules):
     list_to_return = []
     for k in range(1, len(mat)):
-        if mat[k][atributos] == '0':
-            for i in range(q_regras):
+        if mat[k][attributes] == '0':
+            for i in range(q_rules):
                 list_aux = []
-                for j in range(atributos):
+                for j in range(attributes):
                     if mat[k][j] == '0':
                         list_aux.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'))
                     else:
@@ -54,15 +54,15 @@ def constraint_3(mat, atributos, q_regras):
     return and_all(list_to_return)
 
 
-def constraint_4(mat, atributos, q_regras):
+def constraint_4(mat, attributes, q_rules):
     list_to_return = []
     cont_p = 0
     for k in range(1, len(mat)):
-        if mat[k][atributos] == '1':
+        if mat[k][attributes] == '1':
             cont_p += 1
             list_aux = []
-            for i in range(q_regras):
-                for j in range(atributos):
+            for i in range(q_rules):
+                for j in range(attributes):
                     if mat[k][j] == '0':
                         list_aux.append(Implies(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'),
                                                 Not(Atom('C' + str(i + 1) + ',' + str(cont_p)))))
@@ -73,14 +73,14 @@ def constraint_4(mat, atributos, q_regras):
     return and_all(list_to_return)
 
 
-def constraint_5(mat, atributos, q_regras):
+def constraint_5(mat, attributes, q_rules):
     list_to_return = []
     cont_p = 0
     for k in range(1, len(mat)):
-        if mat[k][atributos] == '1':
+        if mat[k][attributes] == '1':
             cont_p += 1
             list_aux = []
-            for i in range(q_regras):
+            for i in range(q_rules):
                 list_aux.append(Atom('C' + str(i + 1) + ',' + str(cont_p)))
             list_to_return.append(or_all(list_aux))
     return and_all(list_to_return)
