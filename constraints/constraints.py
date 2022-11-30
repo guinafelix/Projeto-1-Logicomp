@@ -1,7 +1,8 @@
-from default.semantics import *
 from utils.utils import *
+from default.formula import *
 
 # RESTRIÇÕES
+
 
 def constraint_1(mat, atributos, q_regras):
     list_to_return = []
@@ -14,7 +15,7 @@ def constraint_1(mat, atributos, q_regras):
             or_list.append(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's'))
             temp = or_all(or_list)
             and_list.append(Not(And(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'),
-                                     Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))))
+                                    Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'gt'))))
             and_list.append(
                 Not(And(Atom(mat[0][j] + ',' + str(i + 1) + ',' + 'le'),
                         Atom(mat[0][j] + ',' + str(i + 1) + ',' + 's'))))
@@ -83,4 +84,3 @@ def constraint_5(mat, atributos, q_regras):
                 list_aux.append(Atom('C' + str(i + 1) + ',' + str(cont_p)))
             list_to_return.append(or_all(list_aux))
     return and_all(list_to_return)
-
